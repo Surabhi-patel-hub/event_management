@@ -1,0 +1,55 @@
+{% load static %}
+
+<style type="text/css">
+.mydiv {
+    position:absolute;
+    top: 25%;
+    left: 50%;
+    width:30em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+}
+
+ul li{
+	display: inline-flex;
+	margin:5px;
+}
+</style>
+
+<div class="mydiv">
+<h1 style="margin:20px;">Likes</h1>
+
+{% if latest_event_list %}
+    <ul style="    list-style: none;">
+    {% for event in latest_event_list %}
+        <li>
+			<div style="display: inline-block;margin: 10px;">
+				<img src="/assignments{{ event.image.url }}" alt="img" width="100" style="height: 70px;">
+			</div>
+			<div style="display: inline-block;"> 
+				<div style="font-size: 20px;font-weight: bold;"> 
+				   	<a href="/assignments/{{ event.id }}/">{{ event.event_name }}</a>
+ 			</div>
+				<div>{{ event.date }}</div>
+				<div>{{event.location}}</div>
+			</div>
+			<div style="float: right; margin: 20px;">
+				<img src="assignments/images.png"  style="height: 15px; width: 15px;padding: 2px;"/>
+				<img src="{% static 'assignments/images.png' %}" alt="My image" style="height: 15px; width: 15px;padding: 2px;">
+				{% if not event.is_liked %}
+					<a class="btn btn-primary" href="{% url 'assignments:like' event.id %}"><img src="{% static 'assignments/heart-131965017458786724.png' %}" alt="My image" style="height: 20px; width: 20px" ></a>
+				{%else%}
+					<a class="btn btn-primary" href="{% url 'assignments:like' event.id %}"><img src="{% static 'assignments/53_550x550_Front_Color-NA.jpg' %}" alt="My image" style="height: 20px; width: 20px" ></a>
+				{%endif%}	
+			</div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% else %}
+    <p>No Assignments are available.</p>
+{% endif %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
